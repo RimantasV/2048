@@ -6,6 +6,82 @@ let ctx = canvas.getContext("2d");
 const GAME_WIDTH = 800;
 const GAME_HEIGHT = 600;
 
+//touch events start
+var touchStartClientX, touchStartClientY;
+var gameContainer = document.getElementsByClassName("game-container")[0];
+
+document.addEventListener("touchstart", function (event) {
+  if (
+    (!window.navigator.msPointerEnabled && event.touches.length > 1) ||
+    event.targetTouches.length > 1
+  ) {
+    return; // Ignore if touching with more than 1 finger
+  }
+
+  if (window.navigator.msPointerEnabled) {
+    touchStartClientX = event.pageX;
+    touchStartClientY = event.pageY;
+  } else {
+    touchStartClientX = event.touches[0].clientX;
+    touchStartClientY = event.touches[0].clientY;
+  }
+
+  event.preventDefault();
+});
+
+document.addEventListener("touchmove", function (event) {
+  event.preventDefault();
+});
+
+document.addEventListener("touchend", function (event) {
+  if (
+    (!window.navigator.msPointerEnabled && event.touches.length > 0) ||
+    event.targetTouches.length > 0
+  ) {
+    return; // Ignore if still touching with one or more fingers
+  }
+
+  var touchEndClientX, touchEndClientY;
+
+  if (window.navigator.msPointerEnabled) {
+    touchEndClientX = event.pageX;
+    touchEndClientY = event.pageY;
+  } else {
+    touchEndClientX = event.changedTouches[0].clientX;
+    touchEndClientY = event.changedTouches[0].clientY;
+  }
+
+  var dx = touchEndClientX - touchStartClientX;
+  var absDx = Math.abs(dx);
+
+  var dy = touchEndClientY - touchStartClientY;
+  var absDy = Math.abs(dy);
+
+  if (Math.max(absDx, absDy) > 10) {
+    // (right : left) : (down : up)
+    // self.emit("move", absDx > absDy ? (dx > 0 ? 1 : 3) : dy > 0 ? 2 : 0);
+
+    if (absDx > absDy) {
+      if (dx > 0) {
+        moveRight(grid);
+        updateScreen(grid);
+      } else {
+        moveLeft(grid);
+        updateScreen(grid);
+      }
+    } else {
+        if (dy > 0) {
+            moveDown(grid);
+            updateScreen(grid);
+        } else {
+            moveRight(grid);
+            updateScreen(grid);
+        }
+    }
+  }
+});
+// touch events end
+
 document.addEventListener("keydown", (event) => {
   switch (event.keyCode) {
     case 39:
