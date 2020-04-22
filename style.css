@@ -1,3 +1,6 @@
-body{
-    background-color: blanchedalmond;
+body {
+  background-color: blanchedalmond;
+
+  /* Disables pull-to-refresh but allows overscroll glow effects. */
+  overscroll-behavior-y: contain;
 }
