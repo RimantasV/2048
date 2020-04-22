@@ -74,7 +74,7 @@ document.addEventListener("touchend", function (event) {
             moveDown(grid);
             updateScreen(grid);
         } else {
-            moveRight(grid);
+            moveUp(grid);
             updateScreen(grid);
         }
     }
